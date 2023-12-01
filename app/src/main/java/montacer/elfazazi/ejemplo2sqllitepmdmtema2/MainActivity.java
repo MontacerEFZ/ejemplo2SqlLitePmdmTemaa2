@@ -14,10 +14,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.j256.ormlite.dao.Dao;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import montacer.elfazazi.ejemplo2sqllitepmdmtema2.adapter.ProductoAdapter;
+import montacer.elfazazi.ejemplo2sqllitepmdmtema2.configuraciones.Configuracion;
 import montacer.elfazazi.ejemplo2sqllitepmdmtema2.databinding.ActivityMainBinding;
+import montacer.elfazazi.ejemplo2sqllitepmdmtema2.helpers.ProductosHelper;
 import montacer.elfazazi.ejemplo2sqllitepmdmtema2.modelos.Producto;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Producto> listaProductos;
     private ProductoAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private ProductosHelper helper;
+    private Dao<Producto, Integer> daoProductos;
 
 
     @Override
@@ -44,6 +51,17 @@ public class MainActivity extends AppCompatActivity {
 
         binding.contentMain.contenedor.setAdapter(adapter);
         binding.contentMain.contenedor.setLayoutManager(layoutManager);
+
+        helper = new ProductosHelper(this, Configuracion.BD_NAME, null, Configuracion.BD_VERSION);
+        if (helper != null){
+            try {
+                daoProductos = helper.getDaoProductos();
+                listaProductos.addAll(daoProductos.queryForAll());
+                adapter.notifyItemRangeInserted(0, listaProductos.size());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +100,11 @@ public class MainActivity extends AppCompatActivity {
                     );
                     listaProductos.add(producto);
                     adapter.notifyItemInserted(listaProductos.size()-1); //-1 para añadir al final
-                    Toast.makeText(MainActivity.this, "producto insertado", Toast.LENGTH_SHORT).show();
+                    try {
+                        daoProductos.create(producto);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });

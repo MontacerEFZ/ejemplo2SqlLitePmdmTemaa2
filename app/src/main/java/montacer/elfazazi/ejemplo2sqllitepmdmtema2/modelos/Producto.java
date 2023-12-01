@@ -1,12 +1,27 @@
 package montacer.elfazazi.ejemplo2sqllitepmdmtema2.modelos;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.io.Serial;
 import java.io.Serializable;
 
+@DatabaseTable(tableName = "productos")
 public class Producto {
+
+    @DatabaseField(columnName = "id_producto", generatedId = true)
+    private int id;
+
+    @DatabaseField(columnName = "nombre", canBeNull = false)
     private String nombre;
+
+    @DatabaseField(canBeNull = false)
     private int cantidad;
+
+    @DatabaseField(canBeNull = false)
     private float precio;
+
+    @DatabaseField(columnName =  "total_producto", canBeNull = false)
     private float total;
 
     public Producto() {
@@ -51,6 +66,14 @@ public class Producto {
 
     private void calcularTotal(){
         total = cantidad*precio;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
