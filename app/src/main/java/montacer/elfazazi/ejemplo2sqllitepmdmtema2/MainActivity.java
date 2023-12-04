@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog crearProducto(){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-        builder.setTitle("Crear productoooo");
+        builder.setTitle("Crear producto");
         builder.setCancelable(false);
         
         View productView = LayoutInflater.from(MainActivity.this).inflate(R.layout.product_view_model, null);
