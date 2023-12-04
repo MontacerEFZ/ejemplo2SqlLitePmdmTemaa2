@@ -12,7 +12,7 @@ public class Producto {
     @DatabaseField(columnName = "id_producto", generatedId = true)
     private int id;
 
-    @DatabaseField(columnName = "nombre", canBeNull = false)
+    @DatabaseField(canBeNull = false)
     private String nombre;
 
     @DatabaseField(canBeNull = false)
@@ -21,7 +21,7 @@ public class Producto {
     @DatabaseField(canBeNull = false)
     private float precio;
 
-    @DatabaseField(columnName =  "total_producto", canBeNull = false)
+    @DatabaseField(columnName =  "total_producto", canBeNull = false) //añadimos column_name para darle un nombre concreto a la columna
     private float total;
 
     public Producto() {
